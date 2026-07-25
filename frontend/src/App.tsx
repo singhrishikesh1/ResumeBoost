@@ -13,13 +13,50 @@ function App() {
   const [jobDescription, setJobDescription] = useState(initialJobDescription);
   const [activeTemplate, setActiveTemplate] = useState<ResumeTemplate>('modern');
   const [fontSize, setFontSize] = useState<number>(14);
+  const [isGenerating, setIsGenerating] = useState(false);
 
   // Compute real-time ATS report
   const report = analyzeResume(resumeData, jobDescription);
 
+  const handleExportPDF = async () => {
+    setIsGenerating(true);
+    try {
+      const response = await fetch('http://localhost:5005/api/pdf', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          resumeData,
+          template: activeTemplate,
+          fontSize,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`Failed to generate PDF: ${response.statusText}`);
+      }
+
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `Resume_${resumeData.personalInfo.fullName.replace(/\s+/g, '_') || 'Resume'}.pdf`;
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+    } catch (error: any) {
+      console.error('Error downloading PDF:', error);
+      alert(`Could not download PDF. Make sure the backend server is running on http://localhost:5005.\nError: ${error.message}`);
+    } finally {
+      setIsGenerating(false);
+    }
+  };
+
   return (
     <>
-      <Header />
+      <Header onExportPDF={handleExportPDF} isGenerating={isGenerating} />
       
       <main className="container" style={{ paddingBottom: '3rem' }}>
         <div className="dashboard-grid">

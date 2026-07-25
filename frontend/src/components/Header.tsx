@@ -2,11 +2,12 @@ import React from 'react';
 import { Sparkles, Printer } from 'lucide-react';
 import { ThemeToggle } from './ThemeToggle';
 
-export const Header: React.FC = () => {
-  const handlePrint = () => {
-    window.print();
-  };
+interface HeaderProps {
+  onExportPDF: () => void;
+  isGenerating: boolean;
+}
 
+export const Header: React.FC<HeaderProps> = ({ onExportPDF, isGenerating }) => {
   return (
     <header className="header">
       <div className="container header-container">
@@ -17,12 +18,13 @@ export const Header: React.FC = () => {
         
         <div className="nav-actions">
           <button 
-            onClick={handlePrint} 
+            onClick={onExportPDF} 
             className="btn btn-primary"
-            title="Download PDF via Browser Print"
+            title="Download PDF Resume"
+            disabled={isGenerating}
           >
             <Printer size={18} />
-            <span>Export PDF</span>
+            <span>{isGenerating ? 'Generating...' : 'Export PDF'}</span>
           </button>
           
           <a 
