@@ -581,3 +581,4 @@ export const ResumeEditor: React.FC<ResumeEditorProps> = ({ data, onChange }) =>
     </section>
   );
 };
+
