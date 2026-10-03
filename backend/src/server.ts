@@ -51,3 +51,4 @@ app.post('/api/pdf', async (req, res) => {
 app.listen(PORT, () => {
   console.log(`🚀 ResumeBoost backend server is running on http://localhost:${PORT}`);
 });
+
