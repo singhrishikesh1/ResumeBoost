@@ -46,3 +46,4 @@ export const Header: React.FC<HeaderProps> = ({ onExportPDF, isGenerating }) => 
     </header>
   );
 };
+
