@@ -223,3 +223,4 @@ export async function generateResumePDF(resumeData: any, template: string, fontS
   await browser.close();
   return Buffer.from(pdfBuffer);
 }
+
