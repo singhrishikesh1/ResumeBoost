@@ -232,3 +232,4 @@ export async function generateResumePDF(resumeData: any, template: string, fontS
 
 
 
+
